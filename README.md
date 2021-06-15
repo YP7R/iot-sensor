@@ -1,8 +1,10 @@
 # iot-sensor 
 Visualize sensor datas
 
-[scraper](./scraper.py)
-[./bin/www](./bin/www)
+## [./bin/www](./bin/www)
+Express + WebSocker server  
+`npm start`
 
-npm start  
-python  scraper.py
+## [scraper](./scraper.py)
+Scrape datas and send it to a websocket server  
+`python scraper.py`

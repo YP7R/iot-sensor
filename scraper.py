@@ -21,7 +21,7 @@ class Scraper:
                     'id': 'datas',
                 }
                 await ws.send(json.dumps(message))
-                await asyncio.sleep(60)
+                await asyncio.sleep(10)
 
 
 scraper = Scraper()
