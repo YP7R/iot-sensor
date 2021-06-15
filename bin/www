@@ -22,12 +22,13 @@ app.set('port', port);
 const server = http.createServer(app);
 
 
-const webSocketServer = require('websocket').server
+const webSocketServer = require('websocket').server;
+const { client } = require('websocket');
 let wsServer = new webSocketServer({ httpServer: server })
 
 let datas = []
 let clients = []
-
+let pythonws = null
 wsServer.on('request', (request) => {
 
     let ws = request.accept(null, request.origin)
@@ -35,11 +36,10 @@ wsServer.on('request', (request) => {
         
         msg = JSON.parse(message.utf8Data)
         console.log(msg)
-
         switch(msg.id){
             case "datas":
+                pythonws = ws
                 datas = msg.datas
-                console.log(JSON.stringify(datas))
                 clients.forEach((client)=>{
                     client.send(JSON.stringify(datas))
                 })
@@ -59,7 +59,14 @@ wsServer.on('request', (request) => {
 
 })
 
-
+/*
+wsServer.on('close',()=>{
+    for (client in clients){
+        client.close()
+    }
+    pythonws.close()
+})
+*/
 
 server.listen(port);
 server.on('error', onError);

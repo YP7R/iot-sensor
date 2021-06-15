@@ -4,6 +4,7 @@ import numpy as np
 import websockets
 import json
 import asyncio
+from datetime import datetime
 
 
 class Scraper:
@@ -14,14 +15,24 @@ class Scraper:
         async with websockets.connect(self.local_ws) as ws:
             while True:
                 message = {
-                    'datas': [{'node': 1, 'random_value': np.random.randint(0, 10)},
-                                {'node': 2, 'random_value': np.random.randint(
-                                    0, 10)},
-                                {'node': 3, 'random_value': np.random.randint(0, 10)}],
+                    'datas': [self.sensor_value(i) for i in range(7)],
                     'id': 'datas',
                 }
                 await ws.send(json.dumps(message))
-                await asyncio.sleep(10)
+                await asyncio.sleep(5)
+
+    # Faking datas, because sensors are not public
+    def sensor_value(self,sensor_id):
+        sensor = {'sensor': sensor_id,
+         'battery': np.random.randint(60, 100),
+         'humidity': np.random.randint(20, 50),
+         'location': ['Garden','Bedroom','WC','Living Room','Kitchen','Room','Shower'][sensor_id],
+         'luminance': np.random.randint(100, 140),
+         'motion': np.random.choice(["True", "False"]),
+         'temperature': np.random.randint(20, 40),
+         'updateTime': datetime.now().strftime("%d.%m.%Y %H:%M:%S"),
+         'controller':np.random.randint(0,1)}
+        return sensor
 
 
 scraper = Scraper()
