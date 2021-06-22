@@ -1,0 +1,24 @@
+# https://medium.com/it-dead-inside/docker-containers-and-localhost-cannot-assign-requested-address-6ac7bc0d042b
+version: "3.9"
+
+services:
+    webapp:
+        container_name: "Serveur-node"
+        build: ./iot-sensor/
+        command: sh -c "npm start"
+        ports:
+            - "0.0.0.0:3000:3000"
+        networks: 
+            - my-network
+    pyapp:
+        container_name: "Scraper-python"
+        build: ./scraper/
+        command: sh -c "sleep 30; python scraper.py"
+        environment:
+            - API_URL=Serveur-node:3000
+
+        networks:
+            - my-network
+networks:
+    my-network:
+        external: true

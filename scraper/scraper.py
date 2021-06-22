@@ -1,15 +1,17 @@
 from asyncio.events import get_event_loop
-from typing import get_type_hints
+import numpy
+# from typing import get_type_hints
 import numpy as np
 import websockets
 import json
 import asyncio
+import time
 from datetime import datetime
-
+import os
 
 class Scraper:
     def __init__(self):
-        self.local_ws = 'ws://localhost:3000'
+        self.local_ws = f"ws://{os.environ['API_URL']}"
 
     async def update_datas(self):
         async with websockets.connect(self.local_ws) as ws:

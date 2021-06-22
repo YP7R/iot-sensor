@@ -14,3 +14,9 @@ Scrape datas and send it to a websocket server
 
 next ... scrapper.py on leave
 next ... design bootstrap 4 to 5
+next ... wait for port
+```
+docker network create -d bridge my-network
+docker-compose build
+docker-compose up -d
+```
